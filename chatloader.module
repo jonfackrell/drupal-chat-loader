@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Drupal Module: Chat Loader.
+ *
+ * Adds the required Javascript to all your Drupal pages to load virtual reference widgets
+ *
+ * @author: Jon Fackrell
+ */
+
+
+/**
+* Implements hook_page_attachments().
+*
+* Insert JavaScript to the appropriate scope/region of the page.
+*/
+function chatloader_page_attachments(array &$page)
+{
+
+  $page['#attached']['html_head'][] = [
+    [
+      '#tag' => 'script',
+      '#value' => 'console.log(\'Success!\');',
+    ],
+    'virtual_reference_script',
+  ];
+}
