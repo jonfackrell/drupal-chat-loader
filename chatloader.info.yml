@@ -1,4 +1,6 @@
 name: Virtual Reference Chat Loader
 type: module
+version: 1.0
 core: '8.x'
 description: 'Load custom Javascript and CSS for virtual reference widgets.'
+configure: chatloader.admin_settings

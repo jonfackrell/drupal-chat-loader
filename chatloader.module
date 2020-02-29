@@ -9,20 +9,83 @@
  * @author: Jon Fackrell
  */
 
-
 /**
 * Implements hook_page_attachments().
 *
-* Insert JavaScript to the appropriate scope/region of the page.
+* Insert CSS to the head of the page.
 */
 function chatloader_page_attachments(array &$page)
 {
+  $styles = \Drupal::config('chatloader.settings')->get('chatloader.chatloader_css');
 
-  $page['#attached']['html_head'][] = [
-    [
-      '#tag' => 'script',
-      '#value' => 'console.log(\'Success!\');',
-    ],
-    'virtual_reference_script',
-  ];
+  /* Add external styles */
+  preg_match_all('/href="([^"]+)"/is', $styles, $externalStyles);
+
+  for($i = 0; $i < count($externalStyles[1]); $i++) {
+    $page['#attached']['html_head'][] = [
+      [
+        '#type'  => 'html_tag',
+        '#tag' => 'link',
+        '#attributes' => [
+          'href' => $externalStyles[1][$i],
+          'rel' => 'stylesheet',
+        ],
+        '#value' => '',
+      ],
+      'chatloader_external_css_' . $i,
+    ];
+  }
+
+  /* Add inline styles */
+  preg_match_all('/<style>(.*?)<\/style>/is', $styles, $inlineStyles);
+
+  for($i = 0; $i < count($inlineStyles[1]); $i++) {
+    $page['#attached']['html_head'][] = [
+      [
+        '#type'  => 'html_tag',
+        '#tag' => 'style',
+        '#value' => $inlineStyles[1][$i],
+      ],
+      'chatloader_inline_css_' . $i,
+    ];
+  }
+}
+
+/**
+ * Implements hook_page_bottom().
+ *
+ * Insert JavaScript to the appropriate scope/region of the page.
+ */
+function chatloader_page_bottom(array &$page_bottom)
+{
+  $scripts = \Drupal::config('chatloader.settings')->get('chatloader.chatloader_script');
+
+  /* Add external scripts */
+  preg_match_all('/src="([^"]+)"/is', $scripts, $externalScripts);
+
+  for($i = 0; $i < count($externalScripts[1]); $i++) {
+    $page_bottom['chatloader'][] = [
+      [
+        '#type'  => 'html_tag',
+        '#tag' => 'script',
+        '#attributes' => [
+          'src' => $externalScripts[1][$i],
+        ],
+        '#value' => '',
+      ]
+    ];
+  }
+
+  /* Add inline scripts */
+  preg_match_all('/<script>(.*?)<\/script>/is', $scripts, $inlineScripts);
+
+  for($i = 0; $i < count($inlineScripts[1]); $i++) {
+    $page_bottom['chatloader'][] = [
+      [
+        '#type'  => 'html_tag',
+        '#tag' => 'script',
+        '#value' => $inlineScripts[1][$i],
+      ]
+    ];
+  }
 }

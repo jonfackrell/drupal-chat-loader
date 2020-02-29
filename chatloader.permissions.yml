@@ -1,0 +1,4 @@
+administer chatloader:
+  title: 'Manage Chat Loader Settings'
+  description: 'Allow user to edit Chat styles and JavaScript'
+  restrict access: true

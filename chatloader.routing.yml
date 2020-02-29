@@ -1,0 +1,7 @@
+chatloader.admin_settings:
+  path: '/admin/config/content/chatloader'
+  defaults:
+    _form: '\Drupal\chatloader\Form\ChatLoaderSettingsForm'
+    _title: 'Chat Loader Settings'
+  requirements:
+    _permission: 'administer chatloader'

@@ -1,0 +1,11 @@
+#Schema for the configuration file of the chatloader module.
+chatloader.settings:
+  type: config_object
+  label: 'Chat Loader Settings'
+  mapping:
+    chatloader_css:
+      type: string
+      label: 'CSS'
+    chatloader_script:
+      type: string
+      label: 'Scripts'
